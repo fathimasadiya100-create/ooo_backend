@@ -1,0 +1,26 @@
+{
+  "name": "odd-one-out-online",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k \"npm:server\" \"npm:vite\"",
+    "server": "node server.js",
+    "vite": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "start": "NODE_ENV=production node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "@netlify/blobs": "^11.1.7"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "vite": "^6.4.1"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "key": "sadiya",
+    "name": "sadiya",
+    "points": 116,
+    "wins": 28,
+    "matches": 30,
+    "earnings": 184
+  },
+  {
+    "key": "anees",
+    "name": "anees",
+    "points": 60,
+    "wins": 3,
+    "matches": 27,
+    "earnings": 46
+  },
+  {
+    "key": "anw",
+    "name": "anw",
+    "points": 8,
+    "wins": 0,
+    "matches": 4,
+    "earnings": 0
+  },
+  {
+    "key": "sadiyaa",
+    "name": "sadiyaa",
+    "points": 4,
+    "wins": 1,
+    "matches": 1,
+    "earnings": 0
+  }
+]
