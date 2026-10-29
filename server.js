@@ -555,7 +555,18 @@ io.on('connection', socket => {
   socket.on('player:ready',ready=>{const r=findRoomFor(socket);if(r&&r.status==='lobby'){const p=r.players.get(socket.id);p.ready=!!ready;emitRoom(r);}});
   socket.on('session:set-playlist',({playlist=[]}={})=>{const r=findRoomFor(socket);if(!r||socket.id!==r.hostId||r.status!=='lobby')return;const valid=[...new Set((Array.isArray(playlist)?playlist:[]).filter(x=>MODES.includes(x)))].slice(0,4);if(!valid.length)return socket.emit('notice','Choose at least one game for the party.');r.playlist=valid;r.playlistIndex=0;r.mode=valid[0];emitRoom(r);});
   socket.on('match:start',()=>{const r=findRoomFor(socket);if(r)startMatch(r,socket);});
-  socket.on('sudoku:fill',({row,col,value}={})=>{const r=findRoomFor(socket);if(!r||r.status!=='playing'||r.mode!=='sudoku-knockout'||r.phase!=='solving')return;const g=r.gameData;if(g.solved[socket.id])return; if(!Number.isInteger(row)||row<0||row>8||!Number.isInteger(col)||col<0||col>8)return; if(!Number.isInteger(value)||value<0||value>9)return; if(g.puzzle[row][col]!==0)return socket.emit('notice','That square is locked.'); const grid=g.grids[socket.id];grid[row][col]=value;const filled=grid.flat().filter(Boolean).length-g.puzzle.flat().filter(Boolean).length;g.progress[socket.id]=Math.max(0,Math.round(filled/42*100));const complete=grid.every((line,ri)=>line.every((n,ci)=>n===g.solution[ri][ci]));if(complete){g.solved[socket.id]=true;const p=r.players.get(socket.id);if(p&&!p.sudokuSolved){p.sudokuSolved=true;p.score+=2;g.finishOrder=(g.finishOrder||[]).concat(socket.id); if(g.finishOrder.length===1){r.winner=p.name;r.phase='result';finishMatch(r);return;}if(g.finishOrder.length===r.players.size||[...r.players.values()].every(q=>q.sudokuSolved)){r.phase='result';finishMatch(r);return;}}}emitRoom(r);});
+  socket.on('sudoku:fill',({row,col,value}={})=>{const r=findRoomFor(socket);if(!r||r.status!=='playing'||r.mode!=='sudoku-knockout'||r.phase!=='solving')return;const g=r.gameData;if(g.solved[socket.id])return; if(!Number.isInteger(row)||row<0||row>8||!Number.isInteger(col)||col<0||col>8)return; if(!Number.isInteger(value)||value<0||value>9)return; if(g.puzzle[row][col]!==0)return socket.emit('notice','That square is locked.'); const grid=g.grids[socket.id];grid[row][col]=value; 
+  let correctCount = 0;
+  for (let ri = 0; ri < 9; ri++) {
+    for (let ci = 0; ci < 9; ci++) {
+    // Only count if the player filled it AND it matches the solution, and wasn't part of the initial puzzle
+      if (g.puzzle[ri][ci] === 0 && grid[ri][ci] !== 0 && grid[ri][ci] === g.solution[ri][ci]) {
+        correctCount++;
+    }
+  }
+}
+g.progress[socket.id] = Math.max(0, Math.round((correctCount / 42) * 100));
+const complete=grid.every((line,ri)=>line.every((n,ci)=>n===g.solution[ri][ci]));if(complete){g.solved[socket.id]=true;const p=r.players.get(socket.id);if(p&&!p.sudokuSolved){p.sudokuSolved=true;p.score+=2;g.finishOrder=(g.finishOrder||[]).concat(socket.id); if(g.finishOrder.length===1){r.winner=p.name;r.phase='result';finishMatch(r);return;}if(g.finishOrder.length===r.players.size||[...r.players.values()].every(q=>q.sudokuSolved)){r.phase='result';finishMatch(r);return;}}}emitRoom(r);});
   socket.on('smoothie:add',({fruitId}={})=>{
     const r=findRoomFor(socket); if(!r||r.status!=='playing')return; const p=r.players.get(socket.id); const s=p.smoothie; const fruit=fruitById(fruitId);
     if(!s||!fruit)return; if(s.bowl.length>=8)return socket.emit('notice','Your blender is full! Serve or clear it first.');
