@@ -500,7 +500,7 @@ function startMatch(r, socket) {
 function findRoomFor(socket) { for (const r of rooms.values()) if (r.players.has(socket.id)) return r; return null; }
 function updateAfterAction(r) { emitRoom(r); }
 
-app.get('/health', (_req,res)=>res.json({ok:true, rooms:rooms.size, game:'ODD ONE OUT'}));
+app.get('/health', (_, res) => res.status(200).send('OK'));
 app.get('/api/leaderboard', (_req,res)=>res.json(lifetimeLeaderboard.slice(0,20)));
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'dist')));
