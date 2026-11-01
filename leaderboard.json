@@ -10,10 +10,18 @@
   {
     "key": "anees",
     "name": "anees",
-    "points": 60,
+    "points": 68,
     "wins": 3,
-    "matches": 27,
+    "matches": 31,
     "earnings": 46
+  },
+  {
+    "key": "sadiyaa",
+    "name": "sadiyaa",
+    "points": 20,
+    "wins": 5,
+    "matches": 5,
+    "earnings": 342
   },
   {
     "key": "anw",
@@ -21,14 +29,6 @@
     "points": 8,
     "wins": 0,
     "matches": 4,
-    "earnings": 0
-  },
-  {
-    "key": "sadiyaa",
-    "name": "sadiyaa",
-    "points": 4,
-    "wins": 1,
-    "matches": 1,
     "earnings": 0
   }
 ]

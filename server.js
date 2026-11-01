@@ -776,4 +776,6 @@ socket.on('draw:guess', ({ guess, clientMessageId } = {}) => {
     }
   });
 });
+app.get('/', (req, res) => res.send('OK'));
 httpServer.listen(PORT,'0.0.0.0',()=>console.log(`\n🥤 ODD ONE OUT: Smoothie Showdown server ready on http://localhost:${PORT}\n`));
+
